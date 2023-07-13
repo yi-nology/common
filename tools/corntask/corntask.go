@@ -64,6 +64,10 @@ func (t *Timer) init() {
 
 	t.remoteQueueAssign()
 
+	if localQueueExecutorNum <= 0 {
+		localQueueExecutorNum = 1
+	}
+
 	localQueueExecutorNum := len(t.assignedRemoteQueueKeys) * 10
 	if localQueueExecutorNum > 500 {
 		localQueueExecutorNum = 500
@@ -118,8 +122,7 @@ func (t *Timer) clientHeartbeat() {
 }
 
 func (t *Timer) stopClientHeartbeat() {
-	err := t.redisClient.ZRem(context.Background(), t.getClientKey(),
-		redis.Z{Score: float64(time.Now().Unix()), Member: t.clientID}).Err()
+	err := this.redisClient.ZRem(context.Background(), this.getClientKey(), t.clientID).Err()
 	if err != nil {
 		t.log.Errorf("timer=Stop, RemoteQueueKey=%s, err=%v", t.remoteQueueKey, err)
 		return
