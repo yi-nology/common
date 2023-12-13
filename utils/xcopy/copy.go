@@ -1,5 +1,7 @@
 package xcopy
 
+import "encoding/json"
+
 func DeepCopy(value interface{}) interface{} {
 	if valueMap, ok := value.(map[string]interface{}); ok {
 		newMap := make(map[string]interface{})
@@ -24,4 +26,18 @@ func AppendStrings(a, b []string) []string {
 		a = append(a, b[i])
 	}
 	return a
+}
+
+func Convert(data interface{}, target interface{}) error {
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(bytes, &target)
+	if err != nil {
+		return err
+	}
+
+	return err
 }
