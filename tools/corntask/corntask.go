@@ -64,14 +64,15 @@ func (t *Timer) init() {
 
 	t.remoteQueueAssign()
 
-	if localQueueExecutorNum <= 0 {
-		localQueueExecutorNum = 1
-	}
-
 	localQueueExecutorNum := len(t.assignedRemoteQueueKeys) * 10
 	if localQueueExecutorNum > 500 {
 		localQueueExecutorNum = 500
 	}
+
+	if localQueueExecutorNum <= 0 {
+		localQueueExecutorNum = 1
+	}
+
 	for i := 0; i < localQueueExecutorNum; i++ {
 		go t.localQueueExecutor(i)
 	}
@@ -122,7 +123,7 @@ func (t *Timer) clientHeartbeat() {
 }
 
 func (t *Timer) stopClientHeartbeat() {
-	err := this.redisClient.ZRem(context.Background(), this.getClientKey(), t.clientID).Err()
+	err := t.redisClient.ZRem(context.Background(), t.getClientKey(), t.clientID).Err()
 	if err != nil {
 		t.log.Errorf("timer=Stop, RemoteQueueKey=%s, err=%v", t.remoteQueueKey, err)
 		return
