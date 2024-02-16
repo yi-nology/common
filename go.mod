@@ -3,16 +3,13 @@ module github.com/yi-nology/common
 go 1.16
 
 require (
-	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20230923063757-afb1ddc0824c // indirect
-	github.com/acomagu/bufpipe v1.0.4 // indirect
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/emirpasic/gods v1.18.1
 	github.com/fatih/color v1.15.0
 	github.com/go-git/go-git/v5 v5.11.0
+	github.com/go-lark/lark v1.14.0 // indirect
 	github.com/google/uuid v1.3.0
-	github.com/imdario/mergo v0.3.16 // indirect
-	github.com/jessevdk/go-flags v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8
 	github.com/redis/go-redis/v9 v9.0.5
 	github.com/sergi/go-diff v1.3.1 // indirect
