@@ -3,6 +3,7 @@ package xstrings
 import (
 	"errors"
 	"github.com/yi-nology/common/utils/xlang"
+	"strings"
 	"unicode"
 )
 
@@ -194,4 +195,47 @@ func Union(first, second []string) []string {
 	}
 
 	return merged
+}
+
+// JoinString 增加 []string 转化为 string 中间可以增加一些 , ' . 。 等字符
+func JoinString(elem []string, sep string) string {
+	var size int
+	for _, e := range elem {
+		size += len(e)
+	}
+	if size == 0 {
+		return ""
+	}
+
+	buf := make([]byte, 0, size+len(elem)-1)
+	for _, e := range elem {
+		if len(e) == 0 {
+			continue
+		}
+
+		if len(buf) > 0 {
+			buf = append(buf, sep...)
+		}
+		buf = append(buf, e...)
+	}
+
+	return string(buf)
+}
+
+// SplitString 将 string 剔除，。. '等 转化为 []string
+func SplitString(str string, sep []string) []string {
+	for _, v := range sep {
+		str = strings.ReplaceAll(str, v, " ")
+	}
+	return strings.Fields(str)
+}
+
+// SplitStringBySep 将 string 转化为 []string
+func SplitStringBySep(str string) []string {
+	return strings.Split(str, ",")
+}
+
+// JoinStringBySep 将 []string 转化为 string
+func JoinStringBySep(str []string) string {
+	return strings.Join(str, ",")
 }
