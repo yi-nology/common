@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 )
@@ -21,6 +21,7 @@ var (
 	ErrUnsupportedMessage = errors.New("尚不支持的消息类型")
 )
 
+// WxWorkBot 企业微信机器人
 type WxWorkBot struct {
 	Key        string
 	WebHookUrl string
@@ -31,19 +32,17 @@ type message struct {
 	MsgType string `json:"msgtype"`
 }
 
-// New 创建一个新的机器人实例
+// New 创建企业微信机器人实例
 func New(botKey string) *WxWorkBot {
 	bot := WxWorkBot{
-		Key: botKey,
-		// 直接拼接出接口 URL
+		Key:        botKey,
 		WebHookUrl: fmt.Sprintf(defaultWebHookUrlTemplate, botKey),
-		// 默认 5 秒超时
-		Client: &http.Client{Timeout: 5 * time.Second},
+		Client:     &http.Client{Timeout: 5 * time.Second},
 	}
 	return &bot
 }
 
-// 发送消息，允许的参数类型：Text、Markdown、Image、News
+// Send 发送消息
 func (bot *WxWorkBot) Send(msg interface{}) (bool, error) {
 	msgBytes, err := marshalMessage(msg)
 	if err != nil {
@@ -52,6 +51,7 @@ func (bot *WxWorkBot) Send(msg interface{}) (bool, error) {
 	return bot.SendRaw(msgBytes)
 }
 
+// SendRaw 发送原始JSON消息
 func (bot *WxWorkBot) SendRaw(msgBytes []byte) (bool, error) {
 	webHookUrl := bot.WebHookUrl
 	if len(webHookUrl) == 0 {
@@ -66,8 +66,8 @@ func (bot *WxWorkBot) SendRaw(msgBytes []byte) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	body, _ := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
 	var wxWorkResp wxWorkResponse
 	err = json.Unmarshal(body, &wxWorkResp)
 	if err != nil {
@@ -79,7 +79,28 @@ func (bot *WxWorkBot) SendRaw(msgBytes []byte) (bool, error) {
 	return true, nil
 }
 
-// 防止 < > 等 HTML 字符在 json.marshal 时被 escape
+// CheckMessage 检查消息是否为合法的企业微信消息格式
+func (bot *WxWorkBot) CheckMessage(msg string) bool {
+	if len(msg) == 0 {
+		return false
+	}
+	var raw map[string]interface{}
+	if err := json.Unmarshal([]byte(msg), &raw); err != nil {
+		return false
+	}
+	msgType, ok := raw["msgtype"].(string)
+	if !ok {
+		return false
+	}
+	switch msgType {
+	case "text", "markdown", "image", "news", "template_card":
+		return true
+	default:
+		return false
+	}
+}
+
+// marshal 序列化JSON，禁用HTML转义
 func marshal(msg interface{}) ([]byte, error) {
 	buf := bytes.NewBuffer([]byte{})
 	jsonEncoder := json.NewEncoder(buf)
@@ -92,42 +113,10 @@ func marshal(msg interface{}) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (bot *WxWorkBot) CheckMessage(msg string) bool {
-	text := Text{}
-	markdown := Markdown{}
-	image := Image{}
-	news := News{}
-	card := TemplateCard{}
-	if json.Unmarshal([]byte(msg), &text) == nil {
-		return true
-	}
-
-	if json.Unmarshal([]byte(msg), &markdown) == nil {
-		return true
-	}
-
-	if json.Unmarshal([]byte(msg), &image) == nil {
-		return true
-	}
-
-	if json.Unmarshal([]byte(msg), &news) == nil {
-		return true
-	}
-
-	if json.Unmarshal([]byte(msg), &card) == nil {
-		return true
-	}
-
-	return false
-}
-
-// 将消息包装成企信接口要求的格式，返回 json bytes
+// marshalMessage 将消息包装成企业微信接口要求的格式
 func marshalMessage(msg interface{}) ([]byte, error) {
 	if text, ok := msg.(Text); ok {
-		textMsg := textMessage{
-			message: message{MsgType: "text"},
-			Text:    text,
-		}
+		textMsg := textMessage{message: message{MsgType: "text"}, Text: text}
 		return marshal(textMsg)
 	}
 	if textMsg, ok := msg.(textMessage); ok {
@@ -135,10 +124,7 @@ func marshalMessage(msg interface{}) ([]byte, error) {
 		return marshal(textMsg)
 	}
 	if markdown, ok := msg.(Markdown); ok {
-		markdownMsg := markdownMessage{
-			message:  message{MsgType: "markdown"},
-			Markdown: markdown,
-		}
+		markdownMsg := markdownMessage{message: message{MsgType: "markdown"}, Markdown: markdown}
 		return marshal(markdownMsg)
 	}
 	if markdownMsg, ok := msg.(markdownMessage); ok {
@@ -146,10 +132,7 @@ func marshalMessage(msg interface{}) ([]byte, error) {
 		return marshal(markdownMsg)
 	}
 	if image, ok := msg.(Image); ok {
-		imageMsg := imageMessage{
-			message: message{MsgType: "image"},
-			Image:   image,
-		}
+		imageMsg := imageMessage{message: message{MsgType: "image"}, Image: image}
 		return marshal(imageMsg)
 	}
 	if imageMsg, ok := msg.(imageMessage); ok {
@@ -157,10 +140,7 @@ func marshalMessage(msg interface{}) ([]byte, error) {
 		return marshal(imageMsg)
 	}
 	if news, ok := msg.(News); ok {
-		newsMsg := newsMessage{
-			message: message{MsgType: "news"},
-			News:    news,
-		}
+		newsMsg := newsMessage{message: message{MsgType: "news"}, News: news}
 		return marshal(newsMsg)
 	}
 	if newsMsg, ok := msg.(newsMessage); ok {
@@ -168,10 +148,7 @@ func marshalMessage(msg interface{}) ([]byte, error) {
 		return marshal(newsMsg)
 	}
 	if templateCard, ok := msg.(TemplateCard); ok {
-		templateCardMsg := templateCardMessage{
-			message:      message{MsgType: "template_card"},
-			TemplateCard: templateCard,
-		}
+		templateCardMsg := templateCardMessage{message: message{MsgType: "template_card"}, TemplateCard: templateCard}
 		return marshal(templateCardMsg)
 	}
 	if templateCardMsg, ok := msg.(templateCardMessage); ok {

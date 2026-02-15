@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
@@ -19,7 +18,7 @@ type uploadedMediaResponse struct {
 }
 
 type UploadedMedia struct {
-	Type      string `json:"type"'`
+	Type      string `json:"type"`
 	MediaID   string `json:"media_id"`
 	CreatedAt string `json:"created_at"`
 }
@@ -55,17 +54,17 @@ func (bot *WxWorkBot) UploadMedia(fileName string, fileBytes *[]byte) (*Uploaded
 	writer.Close()
 
 	req, err := http.NewRequest(http.MethodPost, uploadApiUrl(&bot.Key), body)
-	req.Header.Add("Content-Type", writer.FormDataContentType())
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Add("Content-Type", writer.FormDataContentType())
 
 	resp, err := bot.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	respBody, _ := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+	respBody, _ := io.ReadAll(resp.Body)
 	var wxWorkResp uploadedMediaResponse
 	err = json.Unmarshal(respBody, &wxWorkResp)
 	if err != nil {

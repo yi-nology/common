@@ -1,6 +1,9 @@
 package wxwork
 
-import "github.com/yi-nology/common/utils/xhash"
+import (
+	"crypto/md5"
+	"encoding/hex"
+)
 
 type imageMessage struct {
 	message
@@ -18,6 +21,7 @@ func NewImage() *Image {
 
 func (i *Image) SetBase64(s string) *Image {
 	i.Base64 = s
-	i.MD5 = xhash.Md5Hex([]byte(s))
+	h := md5.Sum([]byte(s))
+	i.MD5 = hex.EncodeToString(h[:])
 	return i
 }

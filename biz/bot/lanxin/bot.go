@@ -1,4 +1,4 @@
-package dingtalk
+package lanxin
 
 import (
 	"bytes"
@@ -15,34 +15,30 @@ import (
 )
 
 const (
-	webhookURL = "https://oapi.dingtalk.com/robot/send?access_token=%s"
-
 	SecurityNone    = "none"
 	SecuritySign    = "sign"
 	SecurityKeyword = "keyword"
 )
 
-// Robot 钉钉机器人
+// Robot 蓝信机器人
 type Robot struct {
-	Key          string
-	RequestUrl   string
+	WebHookUrl   string
 	Client       *http.Client
 	SecurityType string
 	Secret       string
 	Keywords     string
 }
 
-// Resp 钉钉API响应
+// Resp 蓝信API响应
 type Resp struct {
 	ErrCode int    `json:"errcode"`
 	ErrMsg  string `json:"errmsg"`
 }
 
-// New 创建钉钉机器人实例
-func New(botKey string) *Robot {
+// New 创建蓝信机器人实例（传入完整的webhook URL）
+func New(webhookUrl string) *Robot {
 	return &Robot{
-		Key:          botKey,
-		RequestUrl:   fmt.Sprintf(webhookURL, botKey),
+		WebHookUrl:   webhookUrl,
 		Client:       &http.Client{Timeout: 5 * time.Second},
 		SecurityType: SecurityNone,
 	}
@@ -77,7 +73,7 @@ func (r *Robot) Send(message interface{}) (bool, error) {
 
 // SendRaw 发送原始JSON消息
 func (r *Robot) SendRaw(msgBytes []byte) (bool, error) {
-	requestUrl := r.RequestUrl
+	requestUrl := r.WebHookUrl
 
 	// 签名模式：在URL中追加timestamp和sign参数
 	if r.SecurityType == SecuritySign && r.Secret != "" {
@@ -145,27 +141,6 @@ func (r *Robot) injectKeyword(msgBytes []byte) []byte {
 			}
 		}
 	}
-	// actionCard 消息
-	if !injected {
-		if ac, ok := raw["actionCard"].(map[string]interface{}); ok {
-			if text, ok := ac["text"].(string); ok {
-				ac["text"] = r.Keywords + "\n" + text
-				injected = true
-			}
-		}
-	}
-	// feedCard 消息 - 在第一个link的title中注入
-	if !injected {
-		if fc, ok := raw["feedCard"].(map[string]interface{}); ok {
-			if links, ok := fc["links"].([]interface{}); ok && len(links) > 0 {
-				if link, ok := links[0].(map[string]interface{}); ok {
-					if title, ok := link["title"].(string); ok {
-						link["title"] = r.Keywords + " " + title
-					}
-				}
-			}
-		}
-	}
 
 	newBytes, err := json.Marshal(raw)
 	if err != nil {
@@ -174,7 +149,7 @@ func (r *Robot) injectKeyword(msgBytes []byte) []byte {
 	return newBytes
 }
 
-// CheckMessage 检查消息是否为合法的钉钉消息格式
+// CheckMessage 检查消息是否为合法的蓝信消息格式
 func (r *Robot) CheckMessage(msg string) bool {
 	if len(msg) == 0 {
 		return false
@@ -188,7 +163,7 @@ func (r *Robot) CheckMessage(msg string) bool {
 		return false
 	}
 	switch msgType {
-	case "text", "link", "markdown", "actionCard", "feedCard":
+	case "text", "markdown":
 		return true
 	default:
 		return false
