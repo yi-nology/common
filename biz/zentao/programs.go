@@ -1,4 +1,3 @@
-package main
 package zentao
 
 import "fmt"

@@ -1,4 +1,3 @@
-package main
 // Package zentao provides a Go SDK for Zentao (禅道) project management system API.
 package zentao
 

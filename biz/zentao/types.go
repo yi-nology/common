@@ -1,4 +1,3 @@
-package main
 package zentao
 
 // ========== 认证相关 ==========
