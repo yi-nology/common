@@ -190,3 +190,89 @@ type ProviderConfig struct {
 	Repo            string   `json:"repo"`
 	InsecureSkipTLS bool     `json:"insecure_skip_tls"` // 跳过 TLS 证书验证（用于私有化部署自签名证书）
 }
+
+// ==================== CI/CD Pipeline 相关 ====================
+
+// PipelineStatus Pipeline 状态
+type PipelineStatus string
+
+const (
+	PipelineStatusCreated            PipelineStatus = "created"
+	PipelineStatusWaitingForResource PipelineStatus = "waiting_for_resource"
+	PipelineStatusPreparing          PipelineStatus = "preparing"
+	PipelineStatusPending            PipelineStatus = "pending"
+	PipelineStatusRunning            PipelineStatus = "running"
+	PipelineStatusSuccess            PipelineStatus = "success"
+	PipelineStatusFailed             PipelineStatus = "failed"
+	PipelineStatusCanceled           PipelineStatus = "canceled"
+	PipelineStatusSkipped            PipelineStatus = "skipped"
+	PipelineStatusManual             PipelineStatus = "manual"
+	PipelineStatusScheduled          PipelineStatus = "scheduled"
+)
+
+// PipelineSource Pipeline 触发来源
+type PipelineSource string
+
+const (
+	PipelineSourcePush              PipelineSource = "push"
+	PipelineSourceWeb               PipelineSource = "web"
+	PipelineSourceTrigger           PipelineSource = "trigger"
+	PipelineSourceSchedule          PipelineSource = "schedule"
+	PipelineSourceAPI               PipelineSource = "api"
+	PipelineSourceMergeRequestEvent PipelineSource = "merge_request_event"
+)
+
+// Pipeline CI/CD Pipeline 信息
+type Pipeline struct {
+	ID             int64          `json:"id"`
+	IID            int64          `json:"iid"` // GitLab 内部编号
+	ProjectID      int64          `json:"project_id"`
+	Status         PipelineStatus `json:"status"`
+	Source         PipelineSource `json:"source"`
+	Ref            string         `json:"ref"` // 分支/标签名
+	SHA            string         `json:"sha"` // 提交 SHA
+	WebURL         string         `json:"web_url"`
+	CreatedAt      time.Time      `json:"created_at"`
+	UpdatedAt      time.Time      `json:"updated_at"`
+	StartedAt      *time.Time     `json:"started_at,omitempty"`
+	FinishedAt     *time.Time     `json:"finished_at,omitempty"`
+	Duration       int64          `json:"duration"` // 秒
+	QueuedDuration int64          `json:"queued_duration"`
+	User           *User          `json:"user,omitempty"`
+	CommitTitle    string         `json:"commit_title"`
+}
+
+// PipelineJob Pipeline 作业
+type PipelineJob struct {
+	ID           int64          `json:"id"`
+	Name         string         `json:"name"`
+	Stage        string         `json:"stage"`
+	Status       PipelineStatus `json:"status"`
+	Ref          string         `json:"ref"`
+	WebURL       string         `json:"web_url"`
+	CreatedAt    time.Time      `json:"created_at"`
+	StartedAt    *time.Time     `json:"started_at,omitempty"`
+	FinishedAt   *time.Time     `json:"finished_at,omitempty"`
+	Duration     float64        `json:"duration"`
+	User         *User          `json:"user,omitempty"`
+	Pipeline     *Pipeline      `json:"pipeline,omitempty"`
+	AllowFailure bool           `json:"allow_failure"`
+}
+
+// TriggerPipelineOptions 触发 Pipeline 选项
+type TriggerPipelineOptions struct {
+	Ref       string            `json:"ref"`       // 必需：分支/标签名
+	Variables map[string]string `json:"variables"` // 可选：CI 变量
+}
+
+// ListPipelineOptions 查询 Pipeline 选项
+type ListPipelineOptions struct {
+	Ref      string         `json:"ref,omitempty"`      // 按分支过滤
+	Status   PipelineStatus `json:"status,omitempty"`   // 按状态过滤
+	Source   PipelineSource `json:"source,omitempty"`   // 按来源过滤
+	Username string         `json:"username,omitempty"` // 按用户过滤
+	OrderBy  string         `json:"order_by,omitempty"` // id/status/ref/updated_at/user_id
+	Sort     string         `json:"sort,omitempty"`     // asc/desc
+	Page     int            `json:"page,omitempty"`
+	PerPage  int            `json:"per_page,omitempty"`
+}

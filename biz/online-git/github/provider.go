@@ -455,6 +455,33 @@ func (p *Provider) ListCommits(ctx context.Context, branch string, opts *onlineg
 	return result, nil
 }
 
+// ==================== CI/CD Pipeline 管理 ====================
+// GitHub 不直接支持 CI/CD Pipeline API，以下方法返回 ErrNotSupported
+
+func (p *Provider) TriggerPipeline(ctx context.Context, opts *onlinegit.TriggerPipelineOptions) (*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitHub, "TriggerPipeline", onlinegit.ErrNotSupported, "GitHub does not support Pipeline API directly, use GitHub Actions instead")
+}
+
+func (p *Provider) GetPipeline(ctx context.Context, pipelineID int64) (*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitHub, "GetPipeline", onlinegit.ErrNotSupported, "GitHub does not support Pipeline API directly, use GitHub Actions instead")
+}
+
+func (p *Provider) ListPipelines(ctx context.Context, opts *onlinegit.ListPipelineOptions) ([]*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitHub, "ListPipelines", onlinegit.ErrNotSupported, "GitHub does not support Pipeline API directly, use GitHub Actions instead")
+}
+
+func (p *Provider) CancelPipeline(ctx context.Context, pipelineID int64) (*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitHub, "CancelPipeline", onlinegit.ErrNotSupported, "GitHub does not support Pipeline API directly, use GitHub Actions instead")
+}
+
+func (p *Provider) RetryPipeline(ctx context.Context, pipelineID int64) (*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitHub, "RetryPipeline", onlinegit.ErrNotSupported, "GitHub does not support Pipeline API directly, use GitHub Actions instead")
+}
+
+func (p *Provider) ListPipelineJobs(ctx context.Context, pipelineID int64) ([]*onlinegit.PipelineJob, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitHub, "ListPipelineJobs", onlinegit.ErrNotSupported, "GitHub does not support Pipeline API directly, use GitHub Actions instead")
+}
+
 // Helper methods
 
 func (p *Provider) toPullRequest(pr *github.PullRequest) *onlinegit.PullRequest {

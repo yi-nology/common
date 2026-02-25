@@ -1,4 +1,5 @@
 package lanxin
+package lanxin
 
 // MarkDownMessage Markdown消息
 type MarkDownMessage struct {

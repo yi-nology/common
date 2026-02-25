@@ -1,4 +1,5 @@
 package lanxin
+package lanxin
 
 // TextMessage 文本消息
 type TextMessage struct {

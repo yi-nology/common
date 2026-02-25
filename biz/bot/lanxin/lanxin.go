@@ -1,4 +1,5 @@
 package lanxin
+package lanxin
 
 // MsgType 消息类型
 type MsgType string

@@ -87,4 +87,24 @@ type GitProvider interface {
 
 	// ListCommits 列出分支的提交历史
 	ListCommits(ctx context.Context, branch string, opts *ListOptions) ([]*Commit, error)
+
+	// ==================== CI/CD Pipeline 管理 ====================
+
+	// TriggerPipeline 触发新的 Pipeline
+	TriggerPipeline(ctx context.Context, opts *TriggerPipelineOptions) (*Pipeline, error)
+
+	// GetPipeline 获取单个 Pipeline 详情
+	GetPipeline(ctx context.Context, pipelineID int64) (*Pipeline, error)
+
+	// ListPipelines 获取 Pipeline 列表
+	ListPipelines(ctx context.Context, opts *ListPipelineOptions) ([]*Pipeline, error)
+
+	// CancelPipeline 取消运行中的 Pipeline
+	CancelPipeline(ctx context.Context, pipelineID int64) (*Pipeline, error)
+
+	// RetryPipeline 重试失败的 Pipeline
+	RetryPipeline(ctx context.Context, pipelineID int64) (*Pipeline, error)
+
+	// ListPipelineJobs 获取 Pipeline 的作业列表
+	ListPipelineJobs(ctx context.Context, pipelineID int64) ([]*PipelineJob, error)
 }

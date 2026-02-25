@@ -423,6 +423,33 @@ func (p *Provider) ListCommits(ctx context.Context, branch string, opts *onlineg
 	return result, nil
 }
 
+// ==================== CI/CD Pipeline 管理 ====================
+// Gitea 不直接支持 CI/CD Pipeline API，以下方法返回 ErrNotSupported
+
+func (p *Provider) TriggerPipeline(ctx context.Context, opts *onlinegit.TriggerPipelineOptions) (*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitea, "TriggerPipeline", onlinegit.ErrNotSupported, "Gitea does not support Pipeline API directly")
+}
+
+func (p *Provider) GetPipeline(ctx context.Context, pipelineID int64) (*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitea, "GetPipeline", onlinegit.ErrNotSupported, "Gitea does not support Pipeline API directly")
+}
+
+func (p *Provider) ListPipelines(ctx context.Context, opts *onlinegit.ListPipelineOptions) ([]*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitea, "ListPipelines", onlinegit.ErrNotSupported, "Gitea does not support Pipeline API directly")
+}
+
+func (p *Provider) CancelPipeline(ctx context.Context, pipelineID int64) (*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitea, "CancelPipeline", onlinegit.ErrNotSupported, "Gitea does not support Pipeline API directly")
+}
+
+func (p *Provider) RetryPipeline(ctx context.Context, pipelineID int64) (*onlinegit.Pipeline, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitea, "RetryPipeline", onlinegit.ErrNotSupported, "Gitea does not support Pipeline API directly")
+}
+
+func (p *Provider) ListPipelineJobs(ctx context.Context, pipelineID int64) ([]*onlinegit.PipelineJob, error) {
+	return nil, onlinegit.NewProviderError(onlinegit.PlatformGitea, "ListPipelineJobs", onlinegit.ErrNotSupported, "Gitea does not support Pipeline API directly")
+}
+
 // Helper methods
 
 func (p *Provider) toPullRequest(pr *gitea.PullRequest) *onlinegit.PullRequest {

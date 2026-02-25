@@ -17,6 +17,7 @@ var (
 	ErrBranchProtected = errors.New("branch is protected")
 	ErrInvalidPlatform = errors.New("invalid or unsupported platform")
 	ErrInvalidConfig   = errors.New("invalid configuration")
+	ErrNotSupported    = errors.New("operation not supported on this platform")
 )
 
 // ProviderError 平台特定错误
