@@ -9,7 +9,6 @@ import (
 	onlinegit "github.com/yi-nology/common/biz/online-git"
 )
 
-
 func (p *Provider) CompareBranches(ctx context.Context, base, head string) (*onlinegit.CompareResult, error) {
 	opts := &gitlab.CompareOptions{
 		From: gitlab.Ptr(base),
