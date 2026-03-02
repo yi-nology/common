@@ -1,5 +1,4 @@
 package lanxin
-package lanxin
 
 import (
 	"bytes"
