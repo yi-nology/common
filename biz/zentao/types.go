@@ -361,28 +361,29 @@ type BugAssignRequest struct {
 // ========== 需求(Story)相关 ==========
 
 // Story 需求结构
+// Story 需求结构
 type Story struct {
-	ID           int     `json:"id"`
-	Product      int     `json:"product"`
-	Module       int     `json:"module"`
-	Plan         int     `json:"plan"`
-	Source       string  `json:"source"`
-	Title        string  `json:"title"`
-	Spec         string  `json:"spec"`
-	Verify       string  `json:"verify"`
-	Type         string  `json:"type"`
-	Status       string  `json:"status"`
-	Stage        string  `json:"stage"`
-	Pri          int     `json:"pri"`
-	Estimate     float64 `json:"estimate"`
-	Version      int     `json:"version"`
-	OpenedBy     string  `json:"openedBy"`
-	OpenedDate   string  `json:"openedDate"`
-	AssignedTo   string  `json:"assignedTo"`
-	AssignedDate string  `json:"assignedDate"`
-	ClosedBy     string  `json:"closedBy"`
-	ClosedDate   string  `json:"closedDate"`
-	ClosedReason string  `json:"closedReason"`
+	ID           int         `json:"id"`
+	Product      int         `json:"product"`
+	Module       int         `json:"module"`
+	Plan         string      `json:"plan"`
+	Source       string      `json:"source"`
+	Title        string      `json:"title"`
+	Spec         string      `json:"spec"`
+	Verify       string      `json:"verify"`
+	Type         string      `json:"type"`
+	Status       string      `json:"status"`
+	Stage        string      `json:"stage"`
+	Pri          int         `json:"pri"`
+	Estimate     float64     `json:"estimate"`
+	Version      int         `json:"version"`
+	OpenedBy     interface{} `json:"openedBy"`
+	OpenedDate   string      `json:"openedDate"`
+	AssignedTo   interface{} `json:"assignedTo"`
+	AssignedDate string      `json:"assignedDate"`
+	ClosedBy     interface{} `json:"closedBy"`
+	ClosedDate   string      `json:"closedDate"`
+	ClosedReason string      `json:"closedReason"`
 }
 
 // StoryListResponse 需求列表响应
