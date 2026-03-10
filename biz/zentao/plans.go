@@ -4,14 +4,14 @@ import "fmt"
 
 // ========== 计划(Plan)管理 ==========
 
-// GetPlans 获取产品的计划列表
-func (c *Client) GetPlans(productID int) ([]Plan, error) {
+// GetPlans 获取产品的计划列表（支持分页）
+func (c *Client) GetPlans(productID int, page, limit int) (*PlanListResponse, error) {
 	var result PlanListResponse
-	path := fmt.Sprintf("/api.php/v1/products/%d/plans?limit=100", productID)
+	path := fmt.Sprintf("/api.php/v1/products/%d/plans?page=%d&limit=%d", productID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取计划列表失败: %v", err)
 	}
-	return result.Plans, nil
+	return &result, nil
 }
 
 // GetPlan 获取计划详情

@@ -4,14 +4,14 @@ import "fmt"
 
 // ========== 执行/迭代(Execution)管理 ==========
 
-// GetExecutions 获取项目的执行/迭代列表
-func (c *Client) GetExecutions(projectID int) ([]Execution, error) {
+// GetExecutions 获取项目的执行/迭代列表（支持分页）
+func (c *Client) GetExecutions(projectID int, page, limit int) (*ExecutionListResponse, error) {
 	var result ExecutionListResponse
-	path := fmt.Sprintf("/api.php/v1/projects/%d/executions?limit=100", projectID)
+	path := fmt.Sprintf("/api.php/v1/projects/%d/executions?page=%d&limit=%d", projectID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取执行列表失败: %v", err)
 	}
-	return result.Executions, nil
+	return &result, nil
 }
 
 // GetExecution 获取执行详情

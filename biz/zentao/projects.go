@@ -4,27 +4,24 @@ import "fmt"
 
 // ========== 项目(Project)管理 ==========
 
-// GetAllProjects 获取所有项目列表
-func (c *Client) GetAllProjects(limit int) ([]Project, error) {
-	if limit <= 0 {
-		limit = 100
-	}
+// GetAllProjects 获取所有项目列表（支持分页）
+func (c *Client) GetAllProjects(page, limit int) (*ProjectListResponse, error) {
 	var result ProjectListResponse
-	path := fmt.Sprintf("/api.php/v1/projects?limit=%d", limit)
+	path := fmt.Sprintf("/api.php/v1/projects?page=%d&limit=%d", page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取项目列表失败: %v", err)
 	}
-	return result.Projects, nil
+	return &result, nil
 }
 
-// GetProjectsByProduct 获取产品关联的项目列表
-func (c *Client) GetProjectsByProduct(productID int) ([]Project, error) {
+// GetProjectsByProduct 获取产品关联的项目列表（支持分页）
+func (c *Client) GetProjectsByProduct(productID int, page, limit int) (*ProjectListResponse, error) {
 	var result ProjectListResponse
-	path := fmt.Sprintf("/api.php/v1/products/%d/projects?limit=100", productID)
+	path := fmt.Sprintf("/api.php/v1/products/%d/projects?page=%d&limit=%d", productID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取项目列表失败: %v", err)
 	}
-	return result.Projects, nil
+	return &result, nil
 }
 
 // GetProject 获取项目详情

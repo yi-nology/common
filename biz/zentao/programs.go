@@ -4,13 +4,14 @@ import "fmt"
 
 // ========== 项目集(Program)管理 ==========
 
-// GetPrograms 获取项目集列表
-func (c *Client) GetPrograms() ([]Program, error) {
+// GetPrograms 获取项目集列表（支持分页）
+func (c *Client) GetPrograms(page, limit int) (*ProgramListResponse, error) {
 	var result ProgramListResponse
-	if err := c.doGet("/api.php/v1/programs?limit=500", &result); err != nil {
+	path := fmt.Sprintf("/api.php/v1/programs?page=%d&limit=%d", page, limit)
+	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取项目集列表失败: %v", err)
 	}
-	return result.Programs, nil
+	return &result, nil
 }
 
 // GetProgram 获取项目集详情

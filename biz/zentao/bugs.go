@@ -7,17 +7,14 @@ import (
 
 // ========== Bug管理 ==========
 
-// GetBugs 获取产品的Bug列表
-func (c *Client) GetBugs(productID int, limit int) ([]Bug, error) {
-	if limit <= 0 {
-		limit = 100
-	}
+// GetBugs 获取产品的Bug列表（支持分页）
+func (c *Client) GetBugs(productID int, page, limit int) (*BugListResponse, error) {
 	var result BugListResponse
-	path := fmt.Sprintf("/api.php/v1/products/%d/bugs?limit=%d", productID, limit)
+	path := fmt.Sprintf("/api.php/v1/products/%d/bugs?page=%d&limit=%d", productID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取Bug列表失败: %v", err)
 	}
-	return result.Bugs, nil
+	return &result, nil
 }
 
 // GetBug 获取Bug详情
@@ -30,56 +27,61 @@ func (c *Client) GetBug(bugID int) (*Bug, error) {
 	return &bug, nil
 }
 
-// GetBugsByProject 根据项目ID过滤Bug列表
-func (c *Client) GetBugsByProject(productID, projectID int, limit int) ([]Bug, error) {
-	bugs, err := c.GetBugs(productID, limit)
+// GetBugsByProject 根据项目ID过滤Bug列表（支持分页）
+func (c *Client) GetBugsByProject(productID, projectID int, page, limit int) (*BugListResponse, error) {
+	resp, err := c.GetBugs(productID, page, limit)
 	if err != nil {
 		return nil, err
 	}
 
 	var filtered []Bug
-	for _, bug := range bugs {
+	for _, bug := range resp.Bugs {
 		if bug.Project == projectID {
 			filtered = append(filtered, bug)
 		}
 	}
-	return filtered, nil
+	resp.Bugs = filtered
+	return resp, nil
 }
 
-// GetBugsByStatus 根据状态过滤Bug列表
-func (c *Client) GetBugsByStatus(productID int, status string, limit int) ([]Bug, error) {
-	bugs, err := c.GetBugs(productID, limit)
+// GetBugsByStatus 根据状态过滤Bug列表（支持分页）
+func (c *Client) GetBugsByStatus(productID int, status string, page, limit int) (*BugListResponse, error) {
+	resp, err := c.GetBugs(productID, page, limit)
 	if err != nil {
 		return nil, err
 	}
 
 	var filtered []Bug
-	for _, bug := range bugs {
+	for _, bug := range resp.Bugs {
 		if bug.Status == status {
 			filtered = append(filtered, bug)
 		}
 	}
-	return filtered, nil
+	resp.Bugs = filtered
+	return resp, nil
 }
 
-// GetActiveBugs 获取激活状态的Bug列表
-func (c *Client) GetActiveBugs(productID int, limit int) ([]Bug, error) {
-	return c.GetBugsByStatus(productID, "active", limit)
+// GetActiveBugs 获取激活状态的Bug列表（支持分页）
+func (c *Client) GetActiveBugs(productID int, page, limit int) (*BugListResponse, error) {
+	return c.GetBugsByStatus(productID, "active", page, limit)
 }
 
-// SearchBugs 搜索Bug（支持多条件过滤）
-func (c *Client) SearchBugs(params BugSearchParams) ([]Bug, error) {
+// SearchBugs 搜索Bug（支持多条件过滤和分页）
+func (c *Client) SearchBugs(params BugSearchParams) (*BugListResponse, error) {
 	if params.Limit <= 0 {
 		params.Limit = 500
 	}
+	if params.Page <= 0 {
+		params.Page = 1
+	}
 
-	bugs, err := c.GetBugs(params.ProductID, params.Limit)
+	resp, err := c.GetBugs(params.ProductID, params.Page, params.Limit)
 	if err != nil {
 		return nil, err
 	}
 
 	var filtered []Bug
-	for _, bug := range bugs {
+	for _, bug := range resp.Bugs {
 		if params.Status != "" && bug.Status != params.Status {
 			continue
 		}
@@ -99,7 +101,8 @@ func (c *Client) SearchBugs(params BugSearchParams) ([]Bug, error) {
 		}
 		filtered = append(filtered, bug)
 	}
-	return filtered, nil
+	resp.Bugs = filtered
+	return resp, nil
 }
 
 // ConfirmBug 确认Bug

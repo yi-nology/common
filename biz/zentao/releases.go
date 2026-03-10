@@ -4,24 +4,24 @@ import "fmt"
 
 // ========== 发布(Release)管理 ==========
 
-// GetReleasesByProduct 获取产品的发布列表
-func (c *Client) GetReleasesByProduct(productID int) ([]Release, error) {
+// GetReleasesByProduct 获取产品的发布列表（支持分页）
+func (c *Client) GetReleasesByProduct(productID int, page, limit int) (*ReleaseListResponse, error) {
 	var result ReleaseListResponse
-	path := fmt.Sprintf("/api.php/v1/products/%d/releases?limit=100", productID)
+	path := fmt.Sprintf("/api.php/v1/products/%d/releases?page=%d&limit=%d", productID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取发布列表失败: %v", err)
 	}
-	return result.Releases, nil
+	return &result, nil
 }
 
-// GetReleasesByProject 获取项目的发布列表
-func (c *Client) GetReleasesByProject(projectID int) ([]Release, error) {
+// GetReleasesByProject 获取项目的发布列表（支持分页）
+func (c *Client) GetReleasesByProject(projectID int, page, limit int) (*ReleaseListResponse, error) {
 	var result ReleaseListResponse
-	path := fmt.Sprintf("/api.php/v1/projects/%d/releases?limit=100", projectID)
+	path := fmt.Sprintf("/api.php/v1/projects/%d/releases?page=%d&limit=%d", projectID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取发布列表失败: %v", err)
 	}
-	return result.Releases, nil
+	return &result, nil
 }
 
 // GetRelease 获取发布详情
