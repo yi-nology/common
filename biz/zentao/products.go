@@ -4,13 +4,14 @@ import "fmt"
 
 // ========== 产品(Product)管理 ==========
 
-// GetProducts 获取产品列表
-func (c *Client) GetProducts() ([]Product, error) {
+// GetProducts 获取产品列表（支持分页）
+func (c *Client) GetProducts(page, limit int) (*ProductListResponse, error) {
 	var result ProductListResponse
-	if err := c.doGet("/api.php/v1/products?limit=500", &result); err != nil {
+	path := fmt.Sprintf("/api.php/v1/products?page=%d&limit=%d", page, limit)
+	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取产品列表失败: %v", err)
 	}
-	return result.Products, nil
+	return &result, nil
 }
 
 // GetProduct 获取产品详情

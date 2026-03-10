@@ -4,30 +4,14 @@ import "fmt"
 
 // ========== 任务(Task)管理 ==========
 
-// GetTasks 获取执行的任务列表(支持分页)
-func (c *Client) GetTasks(executionID int, limit int) ([]Task, error) {
-	if limit <= 0 {
-		limit = 500
+// GetTasks 获取执行的任务列表（支持分页）
+func (c *Client) GetTasks(executionID int, page, limit int) (*TaskListResponse, error) {
+	var result TaskListResponse
+	path := fmt.Sprintf("/api.php/v1/executions/%d/tasks?page=%d&limit=%d", executionID, page, limit)
+	if err := c.doGet(path, &result); err != nil {
+		return nil, fmt.Errorf("获取任务列表失败: %v", err)
 	}
-
-	var allTasks []Task
-	page := 1
-	for {
-		var result TaskListResponse
-		path := fmt.Sprintf("/api.php/v1/executions/%d/tasks?limit=%d&page=%d", executionID, limit, page)
-		if err := c.doGet(path, &result); err != nil {
-			return nil, fmt.Errorf("获取任务列表失败: %v", err)
-		}
-
-		allTasks = append(allTasks, result.Tasks...)
-
-		if len(allTasks) >= result.Total || len(result.Tasks) == 0 {
-			break
-		}
-		page++
-	}
-
-	return allTasks, nil
+	return &result, nil
 }
 
 // GetTask 获取任务详情

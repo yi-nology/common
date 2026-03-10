@@ -4,24 +4,24 @@ import "fmt"
 
 // ========== 版本(Build)管理 ==========
 
-// GetBuildsByProject 获取项目的版本列表
-func (c *Client) GetBuildsByProject(projectID int) ([]Build, error) {
+// GetBuildsByProject 获取项目的版本列表（支持分页）
+func (c *Client) GetBuildsByProject(projectID int, page, limit int) (*BuildListResponse, error) {
 	var result BuildListResponse
-	path := fmt.Sprintf("/api.php/v1/projects/%d/builds?limit=100", projectID)
+	path := fmt.Sprintf("/api.php/v1/projects/%d/builds?page=%d&limit=%d", projectID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取版本列表失败: %v", err)
 	}
-	return result.Builds, nil
+	return &result, nil
 }
 
-// GetBuildsByExecution 获取执行的版本列表
-func (c *Client) GetBuildsByExecution(executionID int) ([]Build, error) {
+// GetBuildsByExecution 获取执行的版本列表（支持分页）
+func (c *Client) GetBuildsByExecution(executionID int, page, limit int) (*BuildListResponse, error) {
 	var result BuildListResponse
-	path := fmt.Sprintf("/api.php/v1/executions/%d/builds?limit=100", executionID)
+	path := fmt.Sprintf("/api.php/v1/executions/%d/builds?page=%d&limit=%d", executionID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取版本列表失败: %v", err)
 	}
-	return result.Builds, nil
+	return &result, nil
 }
 
 // GetBuild 获取版本详情

@@ -4,43 +4,34 @@ import "fmt"
 
 // ========== 需求(Story)管理 ==========
 
-// GetStoriesByProduct 获取产品的需求列表
-func (c *Client) GetStoriesByProduct(productID int, limit int) ([]Story, error) {
-	if limit <= 0 {
-		limit = 100
-	}
+// GetStoriesByProduct 获取产品的需求列表（支持分页）
+func (c *Client) GetStoriesByProduct(productID int, page, limit int) (*StoryListResponse, error) {
 	var result StoryListResponse
-	path := fmt.Sprintf("/api.php/v1/products/%d/stories?limit=%d", productID, limit)
+	path := fmt.Sprintf("/api.php/v1/products/%d/stories?page=%d&limit=%d", productID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取需求列表失败: %v", err)
 	}
-	return result.Stories, nil
+	return &result, nil
 }
 
-// GetStoriesByProject 获取项目的需求列表
-func (c *Client) GetStoriesByProject(projectID int, limit int) ([]Story, error) {
-	if limit <= 0 {
-		limit = 100
-	}
+// GetStoriesByProject 获取项目的需求列表（支持分页）
+func (c *Client) GetStoriesByProject(projectID int, page, limit int) (*StoryListResponse, error) {
 	var result StoryListResponse
-	path := fmt.Sprintf("/api.php/v1/projects/%d/stories?limit=%d", projectID, limit)
+	path := fmt.Sprintf("/api.php/v1/projects/%d/stories?page=%d&limit=%d", projectID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取需求列表失败: %v", err)
 	}
-	return result.Stories, nil
+	return &result, nil
 }
 
-// GetStoriesByExecution 获取执行的需求列表
-func (c *Client) GetStoriesByExecution(executionID int, limit int) ([]Story, error) {
-	if limit <= 0 {
-		limit = 100
-	}
+// GetStoriesByExecution 获取执行的需求列表（支持分页）
+func (c *Client) GetStoriesByExecution(executionID int, page, limit int) (*StoryListResponse, error) {
 	var result StoryListResponse
-	path := fmt.Sprintf("/api.php/v1/executions/%d/stories?limit=%d", executionID, limit)
+	path := fmt.Sprintf("/api.php/v1/executions/%d/stories?page=%d&limit=%d", executionID, page, limit)
 	if err := c.doGet(path, &result); err != nil {
 		return nil, fmt.Errorf("获取需求列表失败: %v", err)
 	}
-	return result.Stories, nil
+	return &result, nil
 }
 
 // GetStory 获取需求详情
