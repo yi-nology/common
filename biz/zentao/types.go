@@ -23,6 +23,17 @@ type User struct {
 	Role     string `json:"role"`
 	Dept     int    `json:"dept"`
 	Email    string `json:"email"`
+	Gender   string `json:"gender"`
+	Phone    string `json:"phone"`
+	Skype    string `json:"skype"`
+	QQ       string `json:"qq"`
+	Weixin   string `json:"weixin"`
+	Address  string `json:"address"`
+	Zipcode  string `json:"zipcode"`
+	Join     string `json:"join"`
+	LastTime string `json:"lastTime"`
+	LastIP   string `json:"lastIP"`
+	Status   string `json:"status"`
 }
 
 // UserListResponse 用户列表响应
@@ -31,6 +42,38 @@ type UserListResponse struct {
 	Total int    `json:"total"`
 	Limit int    `json:"limit"`
 	Users []User `json:"users"`
+}
+
+// UserCreateRequest 创建用户请求
+type UserCreateRequest struct {
+	Account  string `json:"account"`
+	Password string `json:"password"`
+	Realname string `json:"realname"`
+	Email    string `json:"email"`
+	Dept     int    `json:"dept,omitempty"`
+	Role     string `json:"role,omitempty"`
+	Gender   string `json:"gender,omitempty"`
+	Phone    string `json:"phone,omitempty"`
+	QQ       string `json:"qq,omitempty"`
+	Weixin   string `json:"weixin,omitempty"`
+	Address  string `json:"address,omitempty"`
+	Zipcode  string `json:"zipcode,omitempty"`
+}
+
+// UserUpdateRequest 更新用户请求
+type UserUpdateRequest struct {
+	Password string `json:"password,omitempty"`
+	Realname string `json:"realname,omitempty"`
+	Email    string `json:"email,omitempty"`
+	Dept     int    `json:"dept,omitempty"`
+	Role     string `json:"role,omitempty"`
+	Gender   string `json:"gender,omitempty"`
+	Phone    string `json:"phone,omitempty"`
+	QQ       string `json:"qq,omitempty"`
+	Weixin   string `json:"weixin,omitempty"`
+	Address  string `json:"address,omitempty"`
+	Zipcode  string `json:"zipcode,omitempty"`
+	Status   string `json:"status,omitempty"`
 }
 
 // ========== 项目集(Program)相关 ==========
@@ -91,14 +134,20 @@ type ProductListResponse struct {
 
 // ProductCreateRequest 创建/更新产品请求
 type ProductCreateRequest struct {
-	Name   string `json:"name"`
-	Code   string `json:"code,omitempty"`
-	Type   string `json:"type,omitempty"`
-	Desc   string `json:"desc,omitempty"`
-	PO     string `json:"PO,omitempty"`
-	QD     string `json:"QD,omitempty"`
-	RD     string `json:"RD,omitempty"`
-	Status string `json:"status,omitempty"`
+	Name        string `json:"name"`
+	Code        string `json:"code,omitempty"`
+	Type        string `json:"type,omitempty"`
+	Desc        string `json:"desc,omitempty"`
+	PO          string `json:"PO,omitempty"`
+	QD          string `json:"QD,omitempty"`
+	RD          string `json:"RD,omitempty"`
+	Status      string `json:"status,omitempty"`
+	Program     int    `json:"program,omitempty"`
+	Line        int    `json:"line,omitempty"`
+	Parent      int    `json:"parent,omitempty"`
+	Acl         string `json:"acl,omitempty"`
+	Whitelist   string `json:"whitelist,omitempty"`
+	Blacklist   string `json:"blacklist,omitempty"`
 }
 
 // ========== 项目(Project)相关 ==========
@@ -127,16 +176,28 @@ type ProjectListResponse struct {
 
 // ProjectCreateRequest 创建项目请求
 type ProjectCreateRequest struct {
-	Name   string `json:"name"`
-	Code   string `json:"code,omitempty"`
-	Model  string `json:"model,omitempty"`
-	Type   string `json:"type,omitempty"`
-	Begin  string `json:"begin,omitempty"`
-	End    string `json:"end,omitempty"`
-	Desc   string `json:"desc,omitempty"`
-	PM     string `json:"PM,omitempty"`
-	Parent int    `json:"parent,omitempty"`
-	Status string `json:"status,omitempty"`
+	Name         string `json:"name"`
+	Code         string `json:"code,omitempty"`
+	Model        string `json:"model,omitempty"`
+	Type         string `json:"type,omitempty"`
+	Begin        string `json:"begin,omitempty"`
+	End          string `json:"end,omitempty"`
+	Desc         string `json:"desc,omitempty"`
+	PM           string `json:"PM,omitempty"`
+	Parent       int    `json:"parent,omitempty"`
+	Status       string `json:"status,omitempty"`
+	Program      int    `json:"program,omitempty"`
+	Product      []int  `json:"product,omitempty"`
+	PlanBegin    string `json:"planBegin,omitempty"`
+	PlanEnd      string `json:"planEnd,omitempty"`
+	TeamMode     string `json:"teamMode,omitempty"`
+	TeamRate     string `json:"teamRate,omitempty"`
+	WorkRange    string `json:"workRange,omitempty"`
+	Multiple     int    `json:"multiple,omitempty"`
+	Process      int    `json:"process,omitempty"`
+	HoursPerDay  int    `json:"hoursPerDay,omitempty"`
+	TotalHours   int    `json:"totalHours,omitempty"`
+	AutoEstimate string `json:"autoEstimate,omitempty"`
 }
 
 // ========== 执行/迭代(Execution)相关 ==========
@@ -166,14 +227,17 @@ type ExecutionListResponse struct {
 
 // ExecutionCreateRequest 创建执行请求
 type ExecutionCreateRequest struct {
-	Name   string `json:"name"`
-	Code   string `json:"code,omitempty"`
-	Type   string `json:"type,omitempty"`
-	Begin  string `json:"begin,omitempty"`
-	End    string `json:"end,omitempty"`
-	Desc   string `json:"desc,omitempty"`
-	PM     string `json:"PM,omitempty"`
-	Status string `json:"status,omitempty"`
+	Name      string `json:"name"`
+	Code      string `json:"code,omitempty"`
+	Type      string `json:"type,omitempty"`
+	Begin     string `json:"begin,omitempty"`
+	End       string `json:"end,omitempty"`
+	Desc      string `json:"desc,omitempty"`
+	PM        string `json:"PM,omitempty"`
+	Status    string `json:"status,omitempty"`
+	Project   int    `json:"project,omitempty"`
+	Parent    int    `json:"parent,omitempty"`
+	Attribute string `json:"attribute,omitempty"`
 }
 
 // ========== 任务(Task)相关 ==========
@@ -221,28 +285,33 @@ type TaskListResponse struct {
 
 // TaskCreateRequest 创建任务请求
 type TaskCreateRequest struct {
-	Name       string  `json:"name"`
-	Type       string  `json:"type,omitempty"`
-	AssignedTo string  `json:"assignedTo,omitempty"`
-	EstStarted string  `json:"estStarted,omitempty"`
-	Deadline   string  `json:"deadline,omitempty"`
-	Estimate   float64 `json:"estimate,omitempty"`
-	Desc       string  `json:"desc,omitempty"`
-	Pri        int     `json:"pri,omitempty"`
+	Name       string   `json:"name"`
+	Type       string   `json:"type"`
+	AssignedTo []string `json:"assignedTo"`
+	EstStarted string   `json:"estStarted,omitempty"`
+	Deadline   string   `json:"deadline,omitempty"`
+	Estimate   float64  `json:"estimate,omitempty"`
+	Desc       string   `json:"desc,omitempty"`
+	Pri        int      `json:"pri,omitempty"`
+	Module     int      `json:"module,omitempty"`
+	Story      int      `json:"story,omitempty"`
+	Parent     int      `json:"parent,omitempty"`
+	Left       float64  `json:"left,omitempty"`
+	OpenedBy   string   `json:"openedBy,omitempty"`
 }
 
 // TaskUpdateRequest 更新任务请求
 type TaskUpdateRequest struct {
-	Name       string  `json:"name,omitempty"`
-	Type       string  `json:"type,omitempty"`
-	AssignedTo string  `json:"assignedTo,omitempty"`
-	EstStarted string  `json:"estStarted,omitempty"`
-	Deadline   string  `json:"deadline,omitempty"`
-	Estimate   float64 `json:"estimate,omitempty"`
-	Consumed   float64 `json:"consumed,omitempty"`
-	Left       float64 `json:"left,omitempty"`
-	Desc       string  `json:"desc,omitempty"`
-	Pri        int     `json:"pri,omitempty"`
+	Name       string   `json:"name,omitempty"`
+	Type       string   `json:"type,omitempty"`
+	AssignedTo []string `json:"assignedTo,omitempty"`
+	EstStarted string   `json:"estStarted,omitempty"`
+	Deadline   string   `json:"deadline,omitempty"`
+	Estimate   float64  `json:"estimate,omitempty"`
+	Consumed   float64  `json:"consumed,omitempty"`
+	Left       float64  `json:"left,omitempty"`
+	Desc       string   `json:"desc,omitempty"`
+	Pri        int      `json:"pri,omitempty"`
 }
 
 // TaskStartRequest 开始任务请求
@@ -274,39 +343,121 @@ type TaskAssignRequest struct {
 
 // ========== Bug相关 ==========
 
+// BugCreateRequest 创建Bug请求
+type BugCreateRequest struct {
+	Branch     int      `json:"branch,omitempty"`
+	Module     int      `json:"module,omitempty"`
+	Execution  int      `json:"execution,omitempty"`
+	Product    int      `json:"product,omitempty"`
+	Project    int      `json:"project,omitempty"`
+	Title      string   `json:"title"`
+	Keywords   string   `json:"keywords,omitempty"`
+	Severity   int      `json:"severity"`
+	Pri        int      `json:"pri"`
+	Type       string   `json:"type"`
+	OS         string   `json:"os,omitempty"`
+	Browser    string   `json:"browser,omitempty"`
+	Hardware   string   `json:"hardware,omitempty"`
+	Steps      string   `json:"steps,omitempty"`
+	Task       int      `json:"task,omitempty"`
+	Story      int      `json:"story,omitempty"`
+	Deadline   string   `json:"deadline,omitempty"`
+	OpenedBuild []string `json:"openedBuild,omitempty"`
+	AssignedTo string   `json:"assignedTo,omitempty"`
+}
+
+// BugUpdateRequest 修改Bug请求
+type BugUpdateRequest struct {
+	Branch     int      `json:"branch,omitempty"`
+	Module     int      `json:"module,omitempty"`
+	Execution  int      `json:"execution,omitempty"`
+	Title      string   `json:"title,omitempty"`
+	Keywords   string   `json:"keywords,omitempty"`
+	Severity   int      `json:"severity,omitempty"`
+	Pri        int      `json:"pri,omitempty"`
+	Type       string   `json:"type,omitempty"`
+	OS         string   `json:"os,omitempty"`
+	Browser    string   `json:"browser,omitempty"`
+	Hardware   string   `json:"hardware,omitempty"`
+	Steps      string   `json:"steps,omitempty"`
+	Task       int      `json:"task,omitempty"`
+	Story      int      `json:"story,omitempty"`
+	Deadline   string   `json:"deadline,omitempty"`
+	OpenedBuild []string `json:"openedBuild,omitempty"`
+	AssignedTo string   `json:"assignedTo,omitempty"`
+}
+
 // Bug Bug结构
 type Bug struct {
-	ID            int         `json:"id"`
-	Project       int         `json:"project"`
-	Product       int         `json:"product"`
-	Title         string      `json:"title"`
-	Keywords      string      `json:"keywords"`
-	Severity      int         `json:"severity"`
-	Pri           int         `json:"pri"`
-	Type          string      `json:"type"`
-	OS            string      `json:"os"`
-	Browser       string      `json:"browser"`
-	Hardware      string      `json:"hardware"`
-	Steps         string      `json:"steps"`
-	Status        string      `json:"status"`
-	SubStatus     string      `json:"subStatus"`
-	Color         string      `json:"color"`
-	Confirmed     int         `json:"confirmed"`
-	PlanTime      string      `json:"planTime"`
-	OpenedBy      UserRef     `json:"openedBy"`
-	OpenedDate    string      `json:"openedDate"`
-	OpenedBuild   string      `json:"openedBuild"`
-	AssignedTo    UserRef     `json:"assignedTo"`
-	AssignedDate  string      `json:"assignedDate"`
-	Deadline      interface{} `json:"deadline"`
-	ResolvedBy    interface{} `json:"resolvedBy"`
-	Resolution    string      `json:"resolution"`
-	ResolvedBuild string      `json:"resolvedBuild"`
-	ResolvedDate  interface{} `json:"resolvedDate"`
-	ClosedBy      interface{} `json:"closedBy"`
-	ClosedDate    interface{} `json:"closedDate"`
-	StatusName    string      `json:"statusName"`
-	LifeCycle     string      `json:"lifeCycle"`
+	ID               int         `json:"id"`
+	Project          int         `json:"project"`
+	Product          int         `json:"product"`
+	Branch           int         `json:"branch"`
+	Module           int         `json:"module"`
+	Execution        int         `json:"execution"`
+	Title            string      `json:"title"`
+	Keywords         string      `json:"keywords"`
+	Severity         int         `json:"severity"`
+	Pri              int         `json:"pri"`
+	Type             string      `json:"type"`
+	OS               string      `json:"os"`
+	Browser          string      `json:"browser"`
+	Hardware         string      `json:"hardware"`
+	Steps            string      `json:"steps"`
+	Task             int         `json:"task"`
+	Story            int         `json:"story"`
+	ToTask           int         `json:"toTask"`
+	ToStory          int         `json:"toStory"`
+	Plan             int         `json:"plan"`
+	StoryVersion     int         `json:"storyVersion"`
+	Confirmed        int         `json:"confirmed"`
+	ActivatedCount   int         `json:"activatedCount"`
+	ActivatedDate    string      `json:"activatedDate"`
+	FeedbackBy       string      `json:"feedbackBy"`
+	NotifyEmail      string      `json:"notifyEmail"`
+	Mailto           string      `json:"mailto"`
+	DuplicateBug     int         `json:"duplicateBug"`
+	LinkBug          string      `json:"linkBug"`
+	Case             int         `json:"case"`
+	CaseVersion      int         `json:"caseVersion"`
+	Result           string      `json:"result"`
+	Repo             string      `json:"repo"`
+	Entry            string      `json:"entry"`
+	Lines            string      `json:"lines"`
+	V1               string      `json:"v1"`
+	V2               string      `json:"v2"`
+	RepoType         string      `json:"repoType"`
+	Testtask         int         `json:"testtask"`
+	LastEditedBy     int         `json:"lastEditedBy"`
+	LastEditedDate   string      `json:"lastEditedDate"`
+	Deleted          string      `json:"deleted"`
+	Status           string      `json:"status"`
+	SubStatus        string      `json:"subStatus"`
+	Color            string      `json:"color"`
+	PlanTime         string      `json:"planTime"`
+	OpenedBy         UserRef     `json:"openedBy"`
+	OpenedDate       string      `json:"openedDate"`
+	OpenedBuild      []string    `json:"openedBuild"`
+	AssignedTo       UserRef     `json:"assignedTo"`
+	AssignedDate     string      `json:"assignedDate"`
+	Deadline         interface{} `json:"deadline"`
+	ResolvedBy       interface{} `json:"resolvedBy"`
+	Resolution       string      `json:"resolution"`
+	ResolvedBuild    string      `json:"resolvedBuild"`
+	ResolvedDate     interface{} `json:"resolvedDate"`
+	ClosedBy         interface{} `json:"closedBy"`
+	ClosedDate       interface{} `json:"closedDate"`
+	StatusName       string      `json:"statusName"`
+	LifeCycle        string      `json:"lifeCycle"`
+	ExecutionName    string      `json:"executionName"`
+	StoryTitle       string      `json:"storyTitle"`
+	StoryStatus      string      `json:"storyStatus"`
+	LatestStoryVersion int      `json:"latestStoryVersion"`
+	TaskName         string      `json:"taskName"`
+	PlanName         string      `json:"planName"`
+	ProjectName      string      `json:"projectName"`
+	ToCases          string      `json:"toCases"`
+	Files            interface{} `json:"files"`
 }
 
 // BugListResponse Bug列表响应
@@ -361,29 +512,41 @@ type BugAssignRequest struct {
 // ========== 需求(Story)相关 ==========
 
 // Story 需求结构
-// Story 需求结构
 type Story struct {
-	ID           int         `json:"id"`
-	Product      int         `json:"product"`
-	Module       int         `json:"module"`
-	Plan         string      `json:"plan"`
-	Source       string      `json:"source"`
-	Title        string      `json:"title"`
-	Spec         string      `json:"spec"`
-	Verify       string      `json:"verify"`
-	Type         string      `json:"type"`
-	Status       string      `json:"status"`
-	Stage        string      `json:"stage"`
-	Pri          int         `json:"pri"`
-	Estimate     float64     `json:"estimate"`
-	Version      int         `json:"version"`
-	OpenedBy     interface{} `json:"openedBy"`
-	OpenedDate   string      `json:"openedDate"`
-	AssignedTo   interface{} `json:"assignedTo"`
-	AssignedDate string      `json:"assignedDate"`
-	ClosedBy     interface{} `json:"closedBy"`
-	ClosedDate   string      `json:"closedDate"`
-	ClosedReason string      `json:"closedReason"`
+	ID             int         `json:"id"`
+	Product        int         `json:"product"`
+	Module         int         `json:"module"`
+	Plan           int         `json:"plan"`
+	Source         string      `json:"source"`
+	SourceNote     string      `json:"sourceNote"`
+	Title          string      `json:"title"`
+	Spec           string      `json:"spec"`
+	Verify         string      `json:"verify"`
+	Type           string      `json:"type"`
+	Status         string      `json:"status"`
+	Stage          string      `json:"stage"`
+	Pri            int         `json:"pri"`
+	Estimate       float64     `json:"estimate"`
+	Version        int         `json:"version"`
+	OpenedBy       interface{} `json:"openedBy"`
+	OpenedDate     string      `json:"openedDate"`
+	AssignedTo     interface{} `json:"assignedTo"`
+	AssignedDate   string      `json:"assignedDate"`
+	LastEditedBy   interface{} `json:"lastEditedBy"`
+	LastEditedDate string      `json:"lastEditedDate"`
+	ClosedBy       interface{} `json:"closedBy"`
+	ClosedDate     string      `json:"closedDate"`
+	ClosedReason   string      `json:"closedReason"`
+	ToBug          int         `json:"toBug"`
+	FromBug        int         `json:"fromBug"`
+	Parent         int         `json:"parent"`
+	Path          string      `json:"path"`
+	Order          int         `json:"order"`
+	Vision         string      `json:"vision"`
+	Deleted        string      `json:"deleted"`
+	ProductName    string      `json:"productName"`
+	ModuleName     string      `json:"moduleName"`
+	PlanTitle      string      `json:"planTitle"`
 }
 
 // StoryListResponse 需求列表响应
@@ -397,15 +560,36 @@ type StoryListResponse struct {
 // StoryCreateRequest 创建需求请求
 type StoryCreateRequest struct {
 	Title      string  `json:"title"`
+	Product    int     `json:"product"`
+	Pri        int     `json:"pri"`
+	Category   string  `json:"category"`
 	Spec       string  `json:"spec,omitempty"`
 	Verify     string  `json:"verify,omitempty"`
-	Type       string  `json:"type,omitempty"`
-	Pri        int     `json:"pri,omitempty"`
 	Estimate   float64 `json:"estimate,omitempty"`
 	AssignedTo string  `json:"assignedTo,omitempty"`
 	Module     int     `json:"module,omitempty"`
 	Plan       int     `json:"plan,omitempty"`
 	Source     string  `json:"source,omitempty"`
+	SourceNote string  `json:"sourceNote,omitempty"`
+	Keywords   string  `json:"keywords,omitempty"`
+	Parent     int     `json:"parent,omitempty"`
+}
+
+// StoryUpdateRequest 更新需求请求
+type StoryUpdateRequest struct {
+	Title        string  `json:"title,omitempty"`
+	Spec         string  `json:"spec,omitempty"`
+	Verify       string  `json:"verify,omitempty"`
+	Type         string  `json:"type,omitempty"`
+	Pri          int     `json:"pri,omitempty"`
+	Estimate     float64 `json:"estimate,omitempty"`
+	AssignedTo   string  `json:"assignedTo,omitempty"`
+	Module       int     `json:"module,omitempty"`
+	Plan         int     `json:"plan,omitempty"`
+	Source       string  `json:"source,omitempty"`
+	SourceNote   string  `json:"sourceNote,omitempty"`
+	Status       string  `json:"status,omitempty"`
+	Stage        string  `json:"stage,omitempty"`
 }
 
 // ========== 计划(Plan)相关 ==========

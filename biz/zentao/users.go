@@ -32,3 +32,32 @@ func (c *Client) GetUserByID(userID int) (*User, error) {
 	}
 	return &user, nil
 }
+
+// CreateUser 创建用户
+func (c *Client) CreateUser(req UserCreateRequest) (*User, error) {
+	var user User
+	path := "/api.php/v1/users"
+	if err := c.doPost(path, req, &user); err != nil {
+		return nil, fmt.Errorf("创建用户失败: %v", err)
+	}
+	return &user, nil
+}
+
+// UpdateUser 更新用户
+func (c *Client) UpdateUser(userID int, req UserUpdateRequest) (*User, error) {
+	var user User
+	path := fmt.Sprintf("/api.php/v1/users/%d", userID)
+	if err := c.doPut(path, req, &user); err != nil {
+		return nil, fmt.Errorf("更新用户失败: %v", err)
+	}
+	return &user, nil
+}
+
+// DeleteUser 删除用户
+func (c *Client) DeleteUser(userID int) error {
+	path := fmt.Sprintf("/api.php/v1/users/%d", userID)
+	if err := c.doDelete(path); err != nil {
+		return fmt.Errorf("删除用户失败: %v", err)
+	}
+	return nil
+}

@@ -45,17 +45,16 @@ func (c *Client) GetStory(storyID int) (*Story, error) {
 }
 
 // CreateStory 创建需求
-func (c *Client) CreateStory(productID int, req StoryCreateRequest) (*Story, error) {
+func (c *Client) CreateStory(req StoryCreateRequest) (*Story, error) {
 	var story Story
-	path := fmt.Sprintf("/api.php/v1/products/%d/stories", productID)
-	if err := c.doPost(path, req, &story); err != nil {
+	if err := c.doPost("/api.php/v1/stories", req, &story); err != nil {
 		return nil, fmt.Errorf("创建需求失败: %v", err)
 	}
 	return &story, nil
 }
 
 // UpdateStory 更新需求
-func (c *Client) UpdateStory(storyID int, req StoryCreateRequest) (*Story, error) {
+func (c *Client) UpdateStory(storyID int, req StoryUpdateRequest) (*Story, error) {
 	var story Story
 	path := fmt.Sprintf("/api.php/v1/stories/%d", storyID)
 	if err := c.doPut(path, req, &story); err != nil {

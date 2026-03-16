@@ -150,6 +150,35 @@ func (c *Client) AssignBug(bugID int, req BugAssignRequest) error {
 	return nil
 }
 
+// CreateBug 创建Bug
+func (c *Client) CreateBug(productID int, req BugCreateRequest) (*Bug, error) {
+	var bug Bug
+	path := fmt.Sprintf("/api.php/v1/products/%d/bugs", productID)
+	if err := c.doPost(path, req, &bug); err != nil {
+		return nil, fmt.Errorf("创建Bug失败: %v", err)
+	}
+	return &bug, nil
+}
+
+// UpdateBug 更新Bug
+func (c *Client) UpdateBug(bugID int, req BugUpdateRequest) (*Bug, error) {
+	var bug Bug
+	path := fmt.Sprintf("/api.php/v1/bugs/%d", bugID)
+	if err := c.doPut(path, req, &bug); err != nil {
+		return nil, fmt.Errorf("更新Bug失败: %v", err)
+	}
+	return &bug, nil
+}
+
+// DeleteBug 删除Bug
+func (c *Client) DeleteBug(bugID int) error {
+	path := fmt.Sprintf("/api.php/v1/bugs/%d", bugID)
+	if err := c.doDelete(path); err != nil {
+		return fmt.Errorf("删除Bug失败: %v", err)
+	}
+	return nil
+}
+
 // containsIgnoreCase 忽略大小写的字符串包含检查
 func containsIgnoreCase(s, substr string) bool {
 	return strings.Contains(strings.ToLower(s), strings.ToLower(substr))
