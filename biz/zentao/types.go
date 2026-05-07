@@ -452,32 +452,32 @@ type Bug struct {
 	Browser          string      `json:"browser"`
 	Hardware         string      `json:"hardware"`
 	Steps            string      `json:"steps"`
-	Task             int         `json:"task"`
-	Story            int         `json:"story"`
-	ToTask           int         `json:"toTask"`
-	ToStory          int         `json:"toStory"`
-	Plan             int         `json:"plan"`
-	StoryVersion     int         `json:"storyVersion"`
-	Confirmed        int         `json:"confirmed"`
-	ActivatedCount   int         `json:"activatedCount"`
-	ActivatedDate    string      `json:"activatedDate"`
-	FeedbackBy       string      `json:"feedbackBy"`
-	NotifyEmail      string      `json:"notifyEmail"`
+	Task             interface{} `json:"task"`
+	Story            interface{} `json:"story"`
+	ToTask           interface{} `json:"toTask"`
+	ToStory          interface{} `json:"toStory"`
+	Plan             interface{} `json:"plan"`
+	StoryVersion     interface{} `json:"storyVersion"`
+	Confirmed        interface{} `json:"confirmed"`
+	ActivatedCount   interface{} `json:"activatedCount"`
+	ActivatedDate    interface{} `json:"activatedDate"`
+	FeedbackBy       interface{} `json:"feedbackBy"`
+	NotifyEmail      interface{} `json:"notifyEmail"`
 	Mailto           FlexibleString `json:"mailto"`
-	DuplicateBug     int         `json:"duplicateBug"`
+	DuplicateBug     interface{} `json:"duplicateBug"`
 	LinkBug          FlexibleString `json:"linkBug"`
-	Case             int         `json:"case"`
-	CaseVersion      int         `json:"caseVersion"`
-	Result           string      `json:"result"`
-	Repo             string      `json:"repo"`
-	Entry            string      `json:"entry"`
-	Lines            string      `json:"lines"`
-	V1               string      `json:"v1"`
-	V2               string      `json:"v2"`
-	RepoType         string      `json:"repoType"`
-	Testtask         int         `json:"testtask"`
-	LastEditedBy     int         `json:"lastEditedBy"`
-	LastEditedDate   string      `json:"lastEditedDate"`
+	Case             interface{} `json:"case"`
+	CaseVersion      interface{} `json:"caseVersion"`
+	Result           interface{} `json:"result"`
+	Repo             interface{} `json:"repo"`
+	Entry            interface{} `json:"entry"`
+	Lines            interface{} `json:"lines"`
+	V1               interface{} `json:"v1"`
+	V2               interface{} `json:"v2"`
+	RepoType         interface{} `json:"repoType"`
+	Testtask         interface{} `json:"testtask"`
+	LastEditedBy     interface{} `json:"lastEditedBy"`
+	LastEditedDate   interface{} `json:"lastEditedDate"`
 	Deleted          string      `json:"deleted"`
 	Status           string      `json:"status"`
 	SubStatus        string      `json:"subStatus"`
@@ -490,8 +490,8 @@ type Bug struct {
 	AssignedDate     string      `json:"assignedDate"`
 	Deadline         interface{} `json:"deadline"`
 	ResolvedBy       interface{} `json:"resolvedBy"`
-	Resolution       string      `json:"resolution"`
-	ResolvedBuild    string      `json:"resolvedBuild"`
+	Resolution       interface{} `json:"resolution"`
+	ResolvedBuild    interface{} `json:"resolvedBuild"`
 	ResolvedDate     interface{} `json:"resolvedDate"`
 	ClosedBy         interface{} `json:"closedBy"`
 	ClosedDate       interface{} `json:"closedDate"`
@@ -500,7 +500,7 @@ type Bug struct {
 	ExecutionName    string      `json:"executionName"`
 	StoryTitle       string      `json:"storyTitle"`
 	StoryStatus      string      `json:"storyStatus"`
-	LatestStoryVersion int      `json:"latestStoryVersion"`
+	LatestStoryVersion interface{} `json:"latestStoryVersion"`
 	TaskName         string      `json:"taskName"`
 	PlanName         string      `json:"planName"`
 	ProjectName      string      `json:"projectName"`
