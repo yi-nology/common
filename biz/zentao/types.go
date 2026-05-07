@@ -445,8 +445,8 @@ type Bug struct {
 	Execution        int         `json:"execution"`
 	Title            string      `json:"title"`
 	Keywords         string      `json:"keywords"`
-	Severity         int         `json:"severity"`
-	Pri              int         `json:"pri"`
+	Severity         interface{} `json:"severity"`
+	Pri              interface{} `json:"pri"`
 	Type             string      `json:"type"`
 	OS               string      `json:"os"`
 	Browser          string      `json:"browser"`
@@ -478,16 +478,16 @@ type Bug struct {
 	Testtask         interface{} `json:"testtask"`
 	LastEditedBy     interface{} `json:"lastEditedBy"`
 	LastEditedDate   interface{} `json:"lastEditedDate"`
-	Deleted          string      `json:"deleted"`
+	Deleted          interface{} `json:"deleted"`
 	Status           string      `json:"status"`
-	SubStatus        string      `json:"subStatus"`
-	Color            string      `json:"color"`
-	PlanTime         string      `json:"planTime"`
+	SubStatus        interface{} `json:"subStatus"`
+	Color            interface{} `json:"color"`
+	PlanTime         interface{} `json:"planTime"`
 	OpenedBy         UserRef     `json:"openedBy"`
-	OpenedDate       string      `json:"openedDate"`
+	OpenedDate       interface{} `json:"openedDate"`
 	OpenedBuild      FlexibleString `json:"openedBuild"`
 	AssignedTo       UserRef     `json:"assignedTo"`
-	AssignedDate     string      `json:"assignedDate"`
+	AssignedDate     interface{} `json:"assignedDate"`
 	Deadline         interface{} `json:"deadline"`
 	ResolvedBy       interface{} `json:"resolvedBy"`
 	Resolution       interface{} `json:"resolution"`
@@ -496,14 +496,14 @@ type Bug struct {
 	ClosedBy         interface{} `json:"closedBy"`
 	ClosedDate       interface{} `json:"closedDate"`
 	StatusName       string      `json:"statusName"`
-	LifeCycle        string      `json:"lifeCycle"`
-	ExecutionName    string      `json:"executionName"`
-	StoryTitle       string      `json:"storyTitle"`
-	StoryStatus      string      `json:"storyStatus"`
+	LifeCycle        interface{} `json:"lifeCycle"`
+	ExecutionName    interface{} `json:"executionName"`
+	StoryTitle       interface{} `json:"storyTitle"`
+	StoryStatus      interface{} `json:"storyStatus"`
 	LatestStoryVersion interface{} `json:"latestStoryVersion"`
-	TaskName         string      `json:"taskName"`
-	PlanName         string      `json:"planName"`
-	ProjectName      string      `json:"projectName"`
+	TaskName         interface{} `json:"taskName"`
+	PlanName         interface{} `json:"planName"`
+	ProjectName      interface{} `json:"projectName"`
 	ToCases          FlexibleString `json:"toCases"`
 	Files            interface{} `json:"files"`
 }
