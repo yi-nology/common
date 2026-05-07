@@ -1,5 +1,53 @@
 package zentao
 
+import (
+	"encoding/json"
+	"strings"
+)
+
+// FlexibleString 兼容 string 和 []string 的类型
+// 禅道 API 在不同场景下对同一字段可能返回 string 或 array
+type FlexibleString []string
+
+// UnmarshalJSON 实现 json.Unmarshaler 接口
+func (fs *FlexibleString) UnmarshalJSON(data []byte) error {
+	// 尝试解析为数组
+	var arr []string
+	if err := json.Unmarshal(data, &arr); err == nil {
+		*fs = arr
+		return nil
+	}
+	// 尝试解析为字符串
+	var s string
+	if err := json.Unmarshal(data, &s); err == nil {
+		if s == "" {
+			*fs = nil
+		} else {
+			*fs = []string{s}
+		}
+		return nil
+	}
+	// null 或其他情况
+	*fs = nil
+	return nil
+}
+
+// String 返回逗号分隔的字符串（兼容旧代码）
+func (fs FlexibleString) String() string {
+	if fs == nil {
+		return ""
+	}
+	return strings.Join(fs, ",")
+}
+
+// Slice 返回字符串切片
+func (fs FlexibleString) Slice() []string {
+	if fs == nil {
+		return nil
+	}
+	return []string(fs)
+}
+
 // ========== 认证相关 ==========
 
 // TokenRequest 获取token的请求结构
@@ -415,9 +463,9 @@ type Bug struct {
 	ActivatedDate    string      `json:"activatedDate"`
 	FeedbackBy       string      `json:"feedbackBy"`
 	NotifyEmail      string      `json:"notifyEmail"`
-	Mailto           string      `json:"mailto"`
+	Mailto           FlexibleString `json:"mailto"`
 	DuplicateBug     int         `json:"duplicateBug"`
-	LinkBug          string      `json:"linkBug"`
+	LinkBug          FlexibleString `json:"linkBug"`
 	Case             int         `json:"case"`
 	CaseVersion      int         `json:"caseVersion"`
 	Result           string      `json:"result"`
@@ -456,7 +504,7 @@ type Bug struct {
 	TaskName         string      `json:"taskName"`
 	PlanName         string      `json:"planName"`
 	ProjectName      string      `json:"projectName"`
-	ToCases          string      `json:"toCases"`
+	ToCases          FlexibleString `json:"toCases"`
 	Files            interface{} `json:"files"`
 }
 
