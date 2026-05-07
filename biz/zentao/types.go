@@ -305,15 +305,15 @@ type Task struct {
 	Execution    int         `json:"execution"`
 	Name         string      `json:"name"`
 	Type         string      `json:"type"`
-	Pri          int         `json:"pri"`
+	Pri          interface{} `json:"pri"`
 	Status       string      `json:"status"`
-	AssignedTo   UserRef     `json:"assignedTo"`
-	EstStarted   string      `json:"estStarted"`
-	Deadline     string      `json:"deadline"`
-	Estimate     float64     `json:"estimate"`
-	Consumed     float64     `json:"consumed"`
-	Left         float64     `json:"left"`
-	Desc         string      `json:"desc"`
+	AssignedTo   interface{} `json:"assignedTo"`
+	EstStarted   interface{} `json:"estStarted"`
+	Deadline     interface{} `json:"deadline"`
+	Estimate     interface{} `json:"estimate"`
+	Consumed     interface{} `json:"consumed"`
+	Left         interface{} `json:"left"`
+	Desc         interface{} `json:"desc"`
 	OpenedBy     interface{} `json:"openedBy"`
 	OpenedDate   string      `json:"openedDate"`
 	FinishedBy   interface{} `json:"finishedBy"`
@@ -563,19 +563,19 @@ type BugAssignRequest struct {
 type Story struct {
 	ID             int         `json:"id"`
 	Product        int         `json:"product"`
-	Module         int         `json:"module"`
-	Plan           int         `json:"plan"`
-	Source         string      `json:"source"`
-	SourceNote     string      `json:"sourceNote"`
+	Module         interface{} `json:"module"`
+	Plan           interface{} `json:"plan"`
+	Source         interface{} `json:"source"`
+	SourceNote     interface{} `json:"sourceNote"`
 	Title          string      `json:"title"`
-	Spec           string      `json:"spec"`
-	Verify         string      `json:"verify"`
+	Spec           interface{} `json:"spec"`
+	Verify         interface{} `json:"verify"`
 	Type           string      `json:"type"`
 	Status         string      `json:"status"`
-	Stage          string      `json:"stage"`
-	Pri            int         `json:"pri"`
-	Estimate       float64     `json:"estimate"`
-	Version        int         `json:"version"`
+	Stage          interface{} `json:"stage"`
+	Pri            interface{} `json:"pri"`
+	Estimate       interface{} `json:"estimate"`
+	Version        interface{} `json:"version"`
 	OpenedBy       interface{} `json:"openedBy"`
 	OpenedDate     string      `json:"openedDate"`
 	AssignedTo     interface{} `json:"assignedTo"`
