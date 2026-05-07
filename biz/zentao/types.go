@@ -485,7 +485,7 @@ type Bug struct {
 	PlanTime         string      `json:"planTime"`
 	OpenedBy         UserRef     `json:"openedBy"`
 	OpenedDate       string      `json:"openedDate"`
-	OpenedBuild      []string    `json:"openedBuild"`
+	OpenedBuild      FlexibleString `json:"openedBuild"`
 	AssignedTo       UserRef     `json:"assignedTo"`
 	AssignedDate     string      `json:"assignedDate"`
 	Deadline         interface{} `json:"deadline"`
