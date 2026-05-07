@@ -588,13 +588,13 @@ type Story struct {
 	ToBug          int         `json:"toBug"`
 	FromBug        int         `json:"fromBug"`
 	Parent         int         `json:"parent"`
-	Path          string      `json:"path"`
-	Order          int         `json:"order"`
-	Vision         string      `json:"vision"`
-	Deleted        string      `json:"deleted"`
-	ProductName    string      `json:"productName"`
-	ModuleName     string      `json:"moduleName"`
-	PlanTitle      string      `json:"planTitle"`
+	Path           interface{} `json:"path"`
+	Order          interface{} `json:"order"`
+	Vision         interface{} `json:"vision"`
+	Deleted        interface{} `json:"deleted"`
+	ProductName    interface{} `json:"productName"`
+	ModuleName     interface{} `json:"moduleName"`
+	PlanTitle      interface{} `json:"planTitle"`
 }
 
 // StoryListResponse 需求列表响应
@@ -713,7 +713,7 @@ type Build struct {
 	Bugs      string `json:"bugs"`
 	Builder   string `json:"builder"`
 	Desc      string `json:"desc"`
-	Deleted   string `json:"deleted"`
+	Deleted   interface{} `json:"deleted"`
 }
 
 // BuildListResponse 版本列表响应
@@ -751,7 +751,7 @@ type EffortEntry struct {
 	Consumed   float64 `json:"consumed"`
 	Begin      string  `json:"begin"`
 	End        string  `json:"end"`
-	Deleted    string  `json:"deleted"`
+	Deleted    interface{}  `json:"deleted"`
 }
 
 // EffortRequest 记录工时请求
